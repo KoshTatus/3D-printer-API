@@ -1,11 +1,14 @@
-from fastapi import FastAPI
-from routers.auth import router as auth_router
-from database.db import create_db
+from fastapi import FastAPI, APIRouter
+from auth.handlers import router as auth_router
 
+api_router = APIRouter(
+    prefix="/api"
+)
+
+api_router.include_router(auth_router)
 
 app = FastAPI(
     title="3D_Printer"
 )
-
-app.include_router(auth_router)
+app.include_router(api_router)
 
