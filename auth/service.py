@@ -1,17 +1,14 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
-
 from auth.errors import AuthErrors
-from auth.jwt.base.auth import JWTAuth
-from database.db import get_db
-from database.utils import user_exist, add_user, get_user_id
-from schemas.user_schemas import UserForm, UserCreate
+from auth.jwt_auth.base.auth import JWTAuth
+from database.utils import user_exist, add_user, get_user_id, email_exist, password_exist
+from schemas.user_schemas import UserForm, UserCreate, UserModel
 from utils.password_hashing import hash_password
-
 
 class AuthService:
     def __init__(self, jwt_auth: JWTAuth):
-        self.__jwt_auth = jwt_auth
+        self.jwt_auth = jwt_auth
 
     def register(self, user: UserForm, db: Session):
         if user_exist(user.email, db):
@@ -23,11 +20,26 @@ class AuthService:
             ),
             db
         )
-        token = self.__jwt_auth.generate_token(
+        token = self.jwt_auth.generate_token(
             payload={
                 "id" : get_user_id(user.email, db),
                 "group_id" : None,
             }
         )
         return token
+
+    def login(self, user: UserForm, db: Session):
+        if not email_exist(user.email, db):
+            raise AuthErrors.get_email_not_found_error()
+        if not password_exist(user.password, db):
+            raise AuthErrors.get_password_not_found_error()
+
+        token = self.jwt_auth.generate_token(
+            payload={
+                "id": get_user_id(user.email, db),
+                "group_id": None,
+            }
+        )
+        return token
+
 

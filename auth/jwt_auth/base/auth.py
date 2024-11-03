@@ -1,7 +1,7 @@
 from typing import Any
 from datetime import datetime
 import jwt
-from auth.jwt.base.config import JWTConfig
+from auth.jwt_auth.base.config import JWTConfig
 
 
 class JWTAuth:
@@ -9,7 +9,7 @@ class JWTAuth:
         self.__config = config
 
     def generate_token(self, payload: dict[str, Any]) -> str:
-        exp = datetime.now() + self.__config.access_token_ttl
+        exp = datetime.utcnow() + self.__config.access_token_ttl
         payload.update(exp=exp)
         return jwt.encode(payload, self.__config.secret, algorithm=self.__config.algorithm)
 
