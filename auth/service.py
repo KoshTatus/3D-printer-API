@@ -1,10 +1,10 @@
-from fastapi import Depends
 from sqlalchemy.orm import Session
 from auth.errors import AuthErrors
 from auth.jwt_auth.base.auth import JWTAuth
-from database.utils import user_exist, add_user, get_user_id, email_exist, password_exist
-from schemas.user_schemas import UserForm, UserCreate, UserModel
+from auth.utils import user_exist, add_user, get_user_id, email_exist, password_exist
+from schemas.user_schemas import UserForm, UserCreate
 from utils.password_hashing import hash_password
+
 
 class AuthService:
     def __init__(self, jwt_auth: JWTAuth):
