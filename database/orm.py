@@ -33,11 +33,19 @@ class OrdersOrm(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     queue_id: Mapped[int] = mapped_column(ForeignKey("queues.id"))
+    model_id: Mapped[int] = mapped_column(ForeignKey("models.id"))
     createdAt: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.utcnow())
     status: Mapped[str] = mapped_column(default="В обработке")
+    occupancy: Mapped[int]
+    notes: Mapped[str | None]
+
+class ModelsOrm(Base):
+    __tablename__ = "models"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     filepath: Mapped[str]
-    occupancy: Mapped[float]
-    notes: Mapped[str]
+    createdAt: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.utcnow())
+
 
 class QueuesOrm(Base):
     __tablename__ = "queues"

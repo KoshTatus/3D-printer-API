@@ -4,3 +4,6 @@ pydantic
 sqlalchemy
 pyjwt
 python-dotenv
+pydantic[email]
+sqlalchemy-orm
+python-multipart

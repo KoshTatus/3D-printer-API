@@ -1,6 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from orm import UsersOrm
+from database.orm import UsersOrm
 from schemas.user_schemas import UserCreate, UserModel
 from utils.password_hashing import hash_password
 

@@ -2,7 +2,7 @@ import sqlite3
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-db_name = "my_db.db"
+db_name = "database/my_db.db"
 connection = sqlite3.connect(db_name)
 cursor = connection.cursor()
 engine = create_engine(url=f"sqlite:///{db_name}", echo=True)
@@ -22,3 +22,4 @@ class Base(DeclarativeBase):
 def create_db():
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
+
