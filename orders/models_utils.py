@@ -1,12 +1,13 @@
 import datetime
+import os
+
 from fastapi import UploadFile
 import hashlib
 
 PATH = "./uploads/"
 
-coder = hashlib.new("sha256")
-
 def generate_random_value(filename: str) -> str:
+    coder = hashlib.new("sha256")
     time = datetime.datetime.utcnow()
     coder.update((str(time) + filename).encode(encoding="utf-8"))
     return coder.hexdigest()
@@ -23,3 +24,11 @@ def save_upload_file(file: UploadFile) -> str:
         file.file.close()
 
     return path
+
+def delete_file(
+        filepath: str
+):
+    try:
+        os.remove(filepath)
+    except FileNotFoundError:
+        raise FileNotFoundError("File is missing!")

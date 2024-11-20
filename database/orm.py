@@ -7,18 +7,7 @@ from database.db import Base
 class GroupsOrm(Base):
     __tablename__ = "groups"
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
-    canPrintWthtLimits: Mapped[bool]
-    canPlaceOrder: Mapped[bool]
-    canViewOrderQueue: Mapped[bool]
-    canDeleteOrderFromQueue: Mapped[bool]
-    canCreateGroup: Mapped[bool]
-    canUpdateGroup: Mapped[bool]
-    canManageOrder: Mapped[bool]
-    canGiveGroup: Mapped[bool]
-    canMonitorPrinting: Mapped[bool]
-    canAddPrinter: Mapped[bool]
-    canUpdatePrinter: Mapped[bool]
+    isAdmin: Mapped[bool]
 
 class UsersOrm(Base):
     __tablename__ = "users"
@@ -32,10 +21,10 @@ class OrdersOrm(Base):
     __tablename__ = "orders"
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    queue_id: Mapped[int] = mapped_column(ForeignKey("queues.id"))
     model_id: Mapped[int] = mapped_column(ForeignKey("models.id"))
+    name: Mapped[str]
     createdAt: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.utcnow())
-    status: Mapped[str] = mapped_column(default="В обработке")
+    state: Mapped[str] = mapped_column(default="В обработке")
     occupancy: Mapped[int]
     notes: Mapped[str | None]
 
@@ -44,10 +33,6 @@ class ModelsOrm(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     filepath: Mapped[str]
-    createdAt: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.utcnow())
-
-
-class QueuesOrm(Base):
-    __tablename__ = "queues"
-    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    uploadedAt: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.utcnow())
 
