@@ -11,4 +11,4 @@ jwt_secret = os.environ.get("JWT_SECRET")
 class JWTConfig:
     secret: str = jwt_secret
     algorithm: str = "HS256"
-    access_token_ttl: timedelta = timedelta(minutes=10)
+    access_token_ttl: timedelta = timedelta(days=30)

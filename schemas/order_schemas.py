@@ -4,8 +4,10 @@ from pydantic import BaseModel, field_validator, Field
 
 
 class OrderForm(BaseModel):
+    modelId: int
+    printerId: int
+    name: str
     occupancy: int = Field(title="Заполненность", default=0)
-    notes: str | None = Field(title="Заметки", default=None)
 
     @field_validator("occupancy")
     @classmethod
@@ -14,14 +16,8 @@ class OrderForm(BaseModel):
             return occupancy
         raise ValueError("occupancy should be in the range from 0 to 100 ")
 
-class OrderCreate(OrderForm):
-    user_id: int
-    queue_id: int
-    model_id: int
-    createdAt: datetime.datetime = Field(default=datetime.datetime.utcnow())
-    status: str = Field(default="В обработке")
-    occupancy: int
-    notes: str | None
-
-class OrderModel(OrderCreate):
+class OrderModel(OrderForm):
     id: int
+    userId: int
+    createdAt: datetime.datetime = Field(default=datetime.datetime.utcnow())
+    state: int = Field(default=0)
