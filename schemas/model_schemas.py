@@ -11,3 +11,4 @@ class ModelCreate(BaseModel):
 
 class ModelModel(ModelCreate):
     id: int
+    deleted: bool

@@ -126,15 +126,15 @@ def get_user_orders_db(
                 """)
     result = db.execute(query).all()
     return [OrderModel(
-            id=row[0],
-            userId=row[1],
-            modelId=row[2],
-            printerId=row[3],
-            name=row[4],
-            occupancy=row[5],
-            createdAt=row[6],
-            state=row[7]
-        )
+        id=row[0],
+        userId=row[1],
+        modelId=row[2],
+        printerId=row[3],
+        name=row[4],
+        occupancy=row[5],
+        createdAt=row[6],
+        state=row[7]
+    )
         for row in result]
 
 
@@ -155,7 +155,7 @@ def delete_model_by_id(
         db: Session
 ):
     model = get_model_by_id(id, db)
-    #delete_file(model.filepath)
+    # delete_file(model.filepath)
     query = text(f"""
                 UPDATE models
                     SET deleted = true

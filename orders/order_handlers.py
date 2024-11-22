@@ -46,27 +46,3 @@ def get_all_orders(
     return {
         "data": get_orders_db(db)
     }
-
-
-# @router.post("/models/{model_id}/settings", status_code=status.HTTP_201_CREATED)
-# def model_settings(
-#         modelId: int,
-#         form: OrderForm = Query(),
-#         db: Session = Depends(get_db),
-#         user_info: UserInfo = Depends(get_current_auth_user_info)
-# ):
-#     order = OrderCreate(
-#             user_id=user_info.id,
-#             queue_id=1,  # заглушка
-#             model_id=modelId,
-#             occupancy=form.occupancy,
-#             notes=form.notes
-#         )
-#     add_order(
-#         order,
-#         db
-#     )
-#
-#     return {
-#         "OK" : "True"
-#     }
