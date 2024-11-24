@@ -1,7 +1,5 @@
 import datetime
 from dataclasses import dataclass
-
-from pydantic import BaseModel
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, composite
 from database.db import Base
@@ -36,6 +34,7 @@ class OrdersOrm(Base):
     occupancy: Mapped[int]
     createdAt: Mapped[datetime.datetime] = mapped_column(default=datetime.datetime.utcnow(), name="created_at")
     state: Mapped[int] = mapped_column(default=0)
+    progress: Mapped[int] = mapped_column(default=0)
 
 class ModelsOrm(Base):
     __tablename__ = "models"

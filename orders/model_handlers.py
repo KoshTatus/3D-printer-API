@@ -1,18 +1,19 @@
 from io import BytesIO
 from typing import Annotated
-
-from fastapi import APIRouter, status, UploadFile, Depends, Query, Header
+from fastapi import APIRouter, status, UploadFile, Depends, Query, Header, Form
 from sqlalchemy.orm import Session
-from starlette.responses import StreamingResponse
-
+from fastapi.responses import StreamingResponse
 from auth.handlers import get_current_auth_user_info
 from database.db import get_db
-from orders.db_utils import add_model, add_order, get_model_by_id, get_models_db, get_model_by_file, get_user_models_db, \
-    delete_model_by_id
 from orders.models_utils import save_upload_file
 from schemas.model_schemas import ModelCreate
-from schemas.order_schemas import OrderForm
 from schemas.user_schemas import UserInfo
+from orders.db_utils import (
+    add_model,
+    get_model_by_id, get_models_db,
+    get_model_by_file,
+    delete_model_by_id
+)
 
 router = APIRouter(
     tags=["models"]
@@ -21,8 +22,8 @@ router = APIRouter(
 
 @router.post("/models", status_code=status.HTTP_201_CREATED)
 def upload_model(
-        name: Annotated[str | None, Header()],
-        file: UploadFile,
+        name: Annotated[str, Form()],
+        file: Annotated[UploadFile, Form()],
         user_info: UserInfo = Depends(get_current_auth_user_info),
         db: Session = Depends(get_db)
 ):
@@ -31,7 +32,7 @@ def upload_model(
         ModelCreate(
             user_id=user_info.id,
             filepath=path,
-            name=name
+            name=name,
         ),
         db
     )
@@ -47,10 +48,7 @@ def get_user_models(
         db: Session = Depends(get_db)
 ):
     return {
-        "data": get_user_models_db(
-            user_info.id,
-            db
-        )
+        "data": get_models_db(db)
     }
 
 
@@ -83,13 +81,4 @@ def delete_model(
         user_info: UserInfo = Depends(get_current_auth_user_info)
 ):
     delete_model_by_id(id, db)
-
-# @router.get("/models/{model_id}/settings", status_code=status.HTTP_200_OK)
-# def model_settings(
-#         model_id: int,
-#         db: Session = Depends(get_db),
-#         user_info: UserInfo = Depends(get_current_auth_user_info)
-# ):
-#     return get_model_by_id(model_id, db)
-#
 

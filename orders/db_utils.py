@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from fastapi import status
 
 from database.orm import OrdersOrm, ModelsOrm
-from orders.models_utils import delete_file
 from schemas.model_schemas import ModelCreate, ModelModel
 from schemas.order_schemas import OrderModel, OrderForm
 
@@ -19,6 +18,7 @@ def add_order(
         modelId=order.modelId,
         name=order.name,
         occupancy=order.occupancy,
+        createdAt=order.createdAt,
         userId=user_id
     )
     db.add(new_order)
@@ -74,7 +74,8 @@ def get_order_by_id(
             name=result[4],
             occupancy=result[5],
             createdAt=result[6],
-            state=result[7]
+            state=result[7],
+            progress=result[8]
         )
 
 
@@ -101,9 +102,21 @@ def get_orders_db(
 ):
     query = text(f"""
                     SELECT * FROM orders
+                        WHERE orders.state <> 1
                 """)
     result = db.execute(query).all()
-    return [OrderModel.model_validate(row, from_attributes=True) for row in result]
+    return [OrderModel(
+        id=row[0],
+        userId=row[1],
+        modelId=row[2],
+        printerId=row[3],
+        name=row[4],
+        occupancy=row[5],
+        createdAt=row[6],
+        state=row[7],
+        progress=row[8]
+    )
+        for row in result]
 
 
 def get_models_db(
@@ -133,7 +146,8 @@ def get_user_orders_db(
         name=row[4],
         occupancy=row[5],
         createdAt=row[6],
-        state=row[7]
+        state=row[7],
+        progress=row[8]
     )
         for row in result]
 

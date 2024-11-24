@@ -14,9 +14,7 @@ def generate_random_value(filename: str) -> str:
 
 def save_upload_file(file: UploadFile) -> str:
     filename = file.filename
-    print(filename)
     path = f"{PATH}/{generate_random_value(filename)}{filename[filename.rfind('.'):]}"
-    print(path)
     try:
         with open(path, "wb+") as destination:
             destination.write(file.file.read())

@@ -1,14 +1,15 @@
 from fastapi import APIRouter, status, Depends
 from sqlalchemy.orm import Session
-
 from auth.handlers import get_current_auth_user_info
 from database.db import get_db
-from orders.db_utils import add_model, add_order, get_model_by_id, get_models_db, get_model_by_file, get_user_models_db, \
-    delete_model_by_id, get_user_orders_db, get_orders_db, get_order_by_id
-from orders.models_utils import save_upload_file
-from schemas.model_schemas import ModelCreate
 from schemas.order_schemas import OrderForm
 from schemas.user_schemas import UserInfo
+from orders.db_utils import (
+    add_order,
+    get_user_orders_db,
+    get_orders_db,
+    get_order_by_id
+)
 
 router = APIRouter(
     tags=["orders"]

@@ -1,6 +1,4 @@
-from typing import Annotated
-
-from fastapi import APIRouter, Depends, status, Header
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from auth.jwt_auth.base.config import JWTConfig
 from auth.jwt_auth.base.auth import JWTAuth
